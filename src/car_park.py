@@ -35,15 +35,18 @@ class CarPark:
         self.update_displays()
 
     def remove_car(self, plate):
-        self.plates.remove(plate)
+        if self.check_plate_in_car_park(plate):
+            self.plates.remove(plate)
         self.update_displays()
 
     def update_displays(self):
-        data = {available_bays: self.available_bays}
+        for display in displays:
+            display.update()
 
 
-    def check_plate_in_car_park(self):
-        pass
+
+    def check_plate_in_car_park(self, plate):
+        return plate in self.plates
 
     @property
     def available_bays(self):
