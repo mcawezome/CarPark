@@ -34,8 +34,9 @@ class CarPark:
         self.plates.append(plate)
         self.update_displays()
 
-    def remove_car(self):
-        pass
+    def remove_car(self, plate):
+        self.plates.remove(plate)
+        self.update_displays()
 
     def update_displays(self):
         data = {available_bays: self.available_bays}

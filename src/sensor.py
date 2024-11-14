@@ -7,12 +7,17 @@ class Sensor:
         self.car_park = car_park
 
     def scan_plate(self):
+        """
+        Returns a random number plate in form "1ABC123"
+
+        :return: number_plate (string)
+        """
         number_plate = ""
         first_digit = randint(0,9)
         number_plate += str(first_digit)
 
         # A-Z in ASCII is between 65-90
-        letters = [ord(randint(65,90)) for _ in range(0,2)]
+        letters = [chr(randint(65,90)) for _ in range(0,2)]
         for letter in letters:
             number_plate += letter
         # add 3 digits to the end of number plate
@@ -30,6 +35,22 @@ class Sensor:
         number_plate += add_string + str(last_digits)
 
         return number_plate
+
+def detect_car(self):
+    add_or_subtract = randint(0,1)
+    if add_or_subtract == 1:
+        update_car_park('add')
+    else:
+        update_car_park('subtract')
+
+
+def update_car_park(self, add_or_subtract_string):
+    if add_or_subtract_string == 'add':
+        self.car_park.add_car(self.scan_plate())
+    else:
+        # 'subtract'
+        self.car_park.remove_car(self.scan_plate())
+
 
 
 class EntrySensor(Sensor):
