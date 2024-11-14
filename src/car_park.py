@@ -1,5 +1,6 @@
 from sensor import Sensor
 from display import Display
+from random import randint
 
 class CarPark:
     def __init__(self, location = "undefined",
@@ -29,14 +30,21 @@ class CarPark:
         else:
             raise TypeError("Component must be either a Sensor or Display")
 
-    def add_car(self):
-        pass
+    def add_car(self, plate):
+        self.plates.append(plate)
+        self.update_displays()
 
     def remove_car(self):
         pass
 
     def update_displays(self):
-        pass
+        data = {available_bays: self.available_bays}
+
 
     def check_plate_in_car_park(self):
         pass
+
+    @property
+    def available_bays(self):
+        bays = self.capacity - len(self.plates)
+        return bays if bays > 0 else 0
