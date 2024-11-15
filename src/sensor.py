@@ -28,7 +28,7 @@ class EntrySensor(Sensor):
         number_plate += str(first_digit)
 
         # A-Z in ASCII is between 65-90
-        letters = [chr(randint(65,90)) for _ in range(0,2)]
+        letters = [chr(randint(65,90)) for _ in range(0,3)]
         for letter in letters:
             number_plate += letter
         # add 3 digits to the end of number plate
