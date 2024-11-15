@@ -1,32 +1,23 @@
-from car_park import CarPark
 from random import randint, choice
 from abc import ABC, abstractmethod
 
 
 class Sensor(ABC):
-    def __init__(self, id = None, is_active = False, car_park = CarPark()):
+    def __init__(self, id = None, is_active = False):
         self.id = id
         self.is_active = is_active
-        self.car_park = car_park
+
 
     @abstractmethod
-    def update_car_park(self, plate):
+    def scan_plate(self):
         pass
-
-    @abstractmethod
-    def _scan_plate(self):
-        pass
-
-    def detect_vehicle(self):
-        plate = self._scan_plate()
-        self.update_car_park(plate)
 
 
 
 class EntrySensor(Sensor):
-    def __init__(self, id = None, is_active = False, car_park = CarPark()):
-        super().__init__(id, is_active, car_park)
-    def _scan_plate(self):
+    def __init__(self, id = None, is_active = False):
+        super().__init__(id, is_active)
+    def scan_plate(self):
         """
         Returns a random number plate in form "1ABC123"
 
@@ -55,17 +46,16 @@ class EntrySensor(Sensor):
         number_plate += add_string + str(last_digits)
 
         return number_plate
-    def update_car_park(self, plate):
-        self.car_park.add_car(plate)
-        print(f"Incoming 🚘 vehicle detected. Plate: {plate}")
+
+
+
 
 class ExitSensor(Sensor):
-    def __init__(self, id = None, is_active = False, car_park = CarPark()):
-        super().__init__(id, is_active, car_park)
+    def __init__(self, id = None, is_active = False):
+        super().__init__(id, is_active)
 
-    def _scan_plate(self):
-        return choice(self.car_park.plates)
-
-    def update_car_park(self, plate):
-        self.car_park.remove_car(plate)
-        print(f"Outgoing 🚗 vehicle detected. Plate: {plate}")
+    def scan_plate(self, plates):
+        if len(plates) > 0:
+            return choice(plates)
+        else:
+            raise ValueError("Cannot remove car from empty car park.")
