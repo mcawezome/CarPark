@@ -1,20 +1,25 @@
 from display import Display
 from random import randint, choice
 from sensor import ExitSensor, EntrySensor
-
+from pathlib import Path
+from datetime import datetime # we'll use this to timestamp entries
 class CarPark:
     def __init__(self, location="undefined",
                  capacity=100,
                  plates=None,
                  entry_sensors=None,
                  exit_sensors=None,
-                 displays=None):
+                 displays=None,
+                 log_file=Path("new_log.txt")):
         self.location = location
         self.capacity = capacity
         self.entry_sensors = entry_sensors or []
         self.exit_sensors = exit_sensors or []
         self.plates = plates or []
         self.displays = displays or []
+        self.log_file = log_file if isinstance(log_file, Path) else Path(log_file)
+        # create the file if it doesn't exist:
+        self.log_file.touch(exist_ok=True)
 
     def __str__(self):
         """
@@ -47,10 +52,16 @@ class CarPark:
 
     def add_car(self, plate):
         self.plates.append(plate)
+        self._log_car_activity(plate, "entered")
+
+    def _log_car_activity(self, plate, action):
+        with self.log_file.open("a") as f:
+            f.write(f"{plate} {action} at {datetime.now():%Y-%m-%d %H:%M:%S}\n")
 
     def remove_car(self, plate):
         if self.check_plate_in_car_park(plate):
             self.plates.remove(plate)
+            self._log_car_activity(plate, "exited")
         else:
             raise ValueError("Cannot remove car not in car park.")
 
