@@ -19,3 +19,4 @@ if __name__ == "__main__":
     car_park.detect_vehicle_exit()
 
     car_park.update_displays()
+    print("Hello, World")
