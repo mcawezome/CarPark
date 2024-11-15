@@ -51,6 +51,8 @@ class CarPark:
     def remove_car(self, plate):
         if self.check_plate_in_car_park(plate):
             self.plates.remove(plate)
+        else:
+            raise ValueError("Cannot remove car not in car park.")
 
     def update_displays(self):
         data = {}
