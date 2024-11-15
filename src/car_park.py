@@ -2,7 +2,8 @@ from display import Display
 from random import randint, choice
 from sensor import ExitSensor, EntrySensor
 from pathlib import Path
-from datetime import datetime # we'll use this to timestamp entries
+from datetime import datetime
+import json
 class CarPark:
     def __init__(self, location="undefined",
                  capacity=100,
@@ -94,3 +95,16 @@ class CarPark:
         if len(self.entry_sensors) > 0:
             plate = choice(self.exit_sensors).scan_plate(self.plates)
             self.plates.remove(plate)
+
+    def write_config(self):
+        with open("config.json", "w") as f:  # TODO: use self.config_file; use Path; add optional parm to __init__
+            json.dump({"location": self.location,
+                       "capacity": self.capacity,
+                       "log_file": str(self.log_file)}, f)
+
+    @classmethod
+    def from_config(cls, config_file=Path("config.json")):
+        config_file = config_file if isinstance(config_file, Path) else Path(config_file)
+        with config_file.open() as f:
+            config = json.load(f)
+        return cls(config["location"], config["capacity"], log_file=config["log_file"])
